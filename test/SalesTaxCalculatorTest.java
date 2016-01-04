@@ -43,12 +43,38 @@ public class SalesTaxCalculatorTest {
     }
 
     @Test
-    public void totalPriceOfOneImportedPerfumeOfPrice10AtSalesTaxRate10AndImportDutyRate5ShouldBe11Point5() throws Exception {
+    public void totalPriceOfOneImportedPerfumeOfPrice10AtSalesTaxRate10AndImportDutyRate5ShouldBe11Point5() {
         Item item = Mockito.mock(Item.class);
         when(item.isTaxExempted()).thenReturn(false);
         when(item.isImported()).thenReturn(true);
         when(item.calculateTotalPrice()).thenReturn(10d);
         SalesTaxCalculator salesTaxCalculator = new SalesTaxCalculator(10d, 5d);
-        assertEquals(11.5, salesTaxCalculator.calculateTotalPrice(item), 0);
+        assertEquals(11.5, salesTaxCalculator.calculatePrice(item), 0);
+    }
+
+    @Test
+    public void totalPriceOfThreeItemShouldBeSumOfTheirIndividualTotalPrice() {
+        List<Item> items = new ArrayList<>();
+        Item item1 = Mockito.mock(Item.class);
+        when(item1.isTaxExempted()).thenReturn(true);
+        when(item1.isImported()).thenReturn(false);
+        when(item1.calculateTotalPrice()).thenReturn(10d);
+        items.add(item1);
+
+        Item item2 = Mockito.mock(Item.class);
+        when(item2.isTaxExempted()).thenReturn(true);
+        when(item2.isImported()).thenReturn(false);
+        when(item2.calculateTotalPrice()).thenReturn(20d);
+        items.add(item2);
+
+        Item item3 = Mockito.mock(Item.class);
+        when(item3.isTaxExempted()).thenReturn(true);
+        when(item3.isImported()).thenReturn(false);
+        when(item3.calculateTotalPrice()).thenReturn(30d);
+        items.add(item3);
+
+        SalesTaxCalculator salesTaxCalculator = new SalesTaxCalculator(10d, 5d);
+        assertEquals(60d, salesTaxCalculator.calculateTotalPrice(items), 0);
+
     }
 }

@@ -34,7 +34,15 @@ public class SalesTaxCalculator {
         return 0d;
     }
 
-    public double calculateTotalPrice(Item item) {
+    public double calculatePrice(Item item) {
         return item.calculateTotalPrice()+calculateSalesTax(item);
+    }
+
+    public double calculateTotalPrice(List<Item> items) {
+        double totalPrice = 0d;
+        for(Item item : items) {
+            totalPrice += calculatePrice(item);
+        }
+        return totalPrice;
     }
 }
