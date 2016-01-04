@@ -18,9 +18,11 @@ public class SalesTaxCalculator {
     }
 
     private double calculateSalesTax(Item item) {
+        double salesTax = 0d;
         if(!item.isTaxExempted()) {
-            return (item.calculateTotalPrice()*rateOfSalesTax)/100d;
+            salesTax += (item.calculateTotalPrice()*rateOfSalesTax)/100d;
         }
-        return 0d;
+        salesTax = util.Math.roundTo0_05(salesTax);
+        return salesTax;
     }
 }
