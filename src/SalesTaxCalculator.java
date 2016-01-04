@@ -22,7 +22,19 @@ public class SalesTaxCalculator {
         if(!item.isTaxExempted()) {
             salesTax += (item.calculateTotalPrice()*rateOfSalesTax)/100d;
         }
+        salesTax += calculateImportDuty(item);
         salesTax = util.Math.roundTo0_05(salesTax);
         return salesTax;
+    }
+
+    private double calculateImportDuty(Item item) {
+        if(item.isImported()) {
+            return (item.calculateTotalPrice()*rateOfImportDuty)/100d;
+        }
+        return 0d;
+    }
+
+    public double calculateTotalPrice(Item item) {
+        return item.calculateTotalPrice()+calculateSalesTax(item);
     }
 }
