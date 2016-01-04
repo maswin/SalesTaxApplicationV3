@@ -75,6 +75,43 @@ public class SalesTaxCalculatorTest {
 
         SalesTaxCalculator salesTaxCalculator = new SalesTaxCalculator(10d, 5d);
         assertEquals(60d, salesTaxCalculator.calculateTotalPrice(items), 0);
+    }
 
+    @Test
+    public void shouldCalculateTotalSalesTaxOfListOfItems() {
+        List<Item> items = new ArrayList<>();
+        Item item1 = Mockito.mock(Item.class);
+        when(item1.isTaxExempted()).thenReturn(true);
+        when(item1.isImported()).thenReturn(true);
+        when(item1.calculateTotalPrice()).thenReturn(10d);
+        items.add(item1);
+
+        Item item2 = Mockito.mock(Item.class);
+        when(item2.isTaxExempted()).thenReturn(false);
+        when(item2.isImported()).thenReturn(true);
+        when(item2.calculateTotalPrice()).thenReturn(47.50);
+        items.add(item2);
+
+        SalesTaxCalculator salesTaxCalculator = new SalesTaxCalculator(10d, 5d);
+        assertEquals(7.65, salesTaxCalculator.calculateTotalSalesTax(items), 0);
+    }
+
+    @Test
+    public void shouldCalculateTotalPriceOfListOfItems() {
+        List<Item> items = new ArrayList<>();
+        Item item1 = Mockito.mock(Item.class);
+        when(item1.isTaxExempted()).thenReturn(true);
+        when(item1.isImported()).thenReturn(true);
+        when(item1.calculateTotalPrice()).thenReturn(10d);
+        items.add(item1);
+
+        Item item2 = Mockito.mock(Item.class);
+        when(item2.isTaxExempted()).thenReturn(false);
+        when(item2.isImported()).thenReturn(true);
+        when(item2.calculateTotalPrice()).thenReturn(47.50);
+        items.add(item2);
+
+        SalesTaxCalculator salesTaxCalculator = new SalesTaxCalculator(10d, 5d);
+        assertEquals(65.15, salesTaxCalculator.calculateTotalPrice(items), 0);
     }
 }
